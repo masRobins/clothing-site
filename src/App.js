@@ -9,7 +9,7 @@ import ShopPage from './pages/clothing-site-homepage/jsx/_shopping-page'
 import SignInAndSignUpPage from './pages/clothing-site-homepage/jsx/_sign-in-sign-up.jsx'
 
 //authentication
-import {auth} from './firebase/firebase.utils'
+import {auth, createUserProfileDocument} from './firebase/firebase.utils'
 
 //global components
 import Header from './components/clothing-site-components/global/_header.jsx'
@@ -26,8 +26,22 @@ class App extends React.Component {
   unsubscribeFromAuth = null
 
   componentDidMount() {
-    auth.onAuthStateChanged(user => {
-      this.setState({currentUser: user})
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        userRef.onSnapshot(snapShot => {
+            this.setState({
+              currentUser: {
+                id: snapShot.id,
+                ...snapShot.data()
+              }
+            })
+            console.log(this.state)
+          }
+        )
+      }
+      this.setState({currentUser: userAuth})
     })
   }
 
