@@ -1,16 +1,19 @@
 import React from 'react';
 import {Switch, Route, Redirect} from 'react-router-dom';
+import {createStructuredSelector} from 'reselect';
 
 import './App.css';
 
 //Redux
 import {connect} from 'react-redux';
 import {setCurrentUser} from './redux/user/user-actions';
+import {selectCurrentUser} from './redux/user/user-selectors';
 
 //pages
 import HomePage from './pages/clothing-site-homepage/jsx/_homepage'
 import ShopPage from './pages/clothing-site-homepage/jsx/_shopping-page'
 import SignInAndSignUpPage from './pages/clothing-site-homepage/jsx/_sign-in-sign-up.jsx'
+import CheckoutPage from './pages/clothing-site-homepage/jsx/_checkout-page'
 
 //authentication
 import {auth, createUserProfileDocument} from './firebase/firebase.utils'
@@ -19,28 +22,25 @@ import {auth, createUserProfileDocument} from './firebase/firebase.utils'
 import Header from './components/clothing-site-components/global/_header.jsx'
 
 class App extends React.Component {
-  unsubscribeFromAuth = null
+  unsubscribeFromAuth = null;
 
   componentDidMount() {
-    const {setCurrentUser} = this.props;
+    const { setCurrentUser } = this.props;
 
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot(snapShot => {
-            setCurrentUser({
-              currentUser: {
-                id: snapShot.id,
-                ...snapShot.data()
-              }
-            })
-            console.log(this.state)
-          }
-        )
+          setCurrentUser({
+            id: snapShot.id,
+            ...snapShot.data()
+          });
+        });
       }
-      setCurrentUser(userAuth)
-    })
+
+      setCurrentUser(userAuth);
+    });
   }
 
   componentWillUnmount() {
@@ -54,6 +54,7 @@ class App extends React.Component {
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path='/shop' component={ShopPage} />
+          <Route exact path='/checkout' component={CheckoutPage} />
           <Route
             exact
             path='/signin'
@@ -67,12 +68,12 @@ class App extends React.Component {
           />
         </Switch>
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
 });
 
 const mapDispatchToProps = dispatch => ({
