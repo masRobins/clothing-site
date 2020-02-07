@@ -27,11 +27,6 @@ a {
     }
     .checkout-page {
       width: 95%;
-      .checkout-header {
-        .header-block:last-child {
-          width: auto;
-        }
-      }
     }
     .header {
       max-width: 606px;
@@ -158,6 +153,7 @@ a {
     }
   }
   .sign-in-and-sign-up {
+    padding: 0 12px;
     flex-direction: column;
     align-items: center;
     .sign-in,
@@ -165,6 +161,20 @@ a {
       max-width: 500px;
       width: 100%;
       padding-bottom: 40px;
+    }
+  }
+}
+@media (max-width: 450px) {
+  .checkout-page {
+    .checkout-header {
+      .header-block:last-child {
+        width: auto !important;
+      }
+    }
+    .checkout-item {
+      .name {
+        width: 22%;
+      }
     }
   }
 }
