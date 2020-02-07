@@ -25,6 +25,14 @@ a {
         flex-direction: column;
       }
     }
+    .checkout-page {
+      width: 95%;
+      .checkout-header {
+        .header-block:last-child {
+          width: auto;
+        }
+      }
+    }
     .header {
       max-width: 606px;
       margin: 0 auto;
@@ -50,7 +58,7 @@ a {
         height: auto;
         right: unset;
         .cart-items {
-          padding-bottom: 10px;
+          margin-bottom: 10px;
           .cart-item {
             height: 100%;
             .item-details {
