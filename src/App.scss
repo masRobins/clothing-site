@@ -50,8 +50,8 @@ a {
         height: auto;
         right: unset;
         .cart-items {
+          padding-bottom: 10px;
           .cart-item {
-            width: 80%;
             height: 100%;
             .item-details {
               justify-content: flex-start;
